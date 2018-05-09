@@ -3,6 +3,8 @@ import './App.css';
 import ListItem from './ListItem';
 import Fetcher from './Fetch';
 
+const backendAPI = process.env.REACT_APP_BACKEND_URL;
+
 class UserSelectPage extends Component {
   onProductSelect = (data) => {
     console.log(`Product ${data.name} clicked.`);
@@ -18,7 +20,7 @@ class UserSelectPage extends Component {
 
     return (
       <div className="List">
-        <Fetcher url="http://localhost:8000/api/products">
+        <Fetcher url={`${backendAPI}/products`}>
           <Products />
         </Fetcher>
       </div>

@@ -21,7 +21,7 @@ class Fetcher extends Component {
   }
 
   async fetchData(url) {
-    const token = qs.parse(window.location.search).token;
+    const token = qs.parse(window.location.search.split('?')[1]).token;
     const headers = {
       'Authorization': `Token ${token}`,
     };
@@ -74,7 +74,7 @@ class Fetcher extends Component {
 }
 
 const post = async (url, data) => {
-  const token = qs.parse(window.location.search).token;
+  const token = qs.parse(window.location.search.split('?')[1]).token;
   const headers = {
     'Authorization': `Token ${token}`,
     'content-type': 'application/json'

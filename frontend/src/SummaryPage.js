@@ -4,6 +4,8 @@ import ListItem from './ListItem';
 import { post } from './Fetch';
 import { popup } from './utils';
 
+const backendAPI = process.env.REACT_APP_BACKEND_URL;
+
 class UserSelectPage extends Component {
   constructor() {
     super();
@@ -13,7 +15,7 @@ class UserSelectPage extends Component {
     const { user, product } = this.props.info;
     console.log(`Confirmed.`);
     try {
-      await post(`http://localhost:8000/api/transactions/`, {
+      await post(`${backendAPI}/transactions/`, {
         user_id: user.id,
         timestamp: new Date(),
         price: product.price,
