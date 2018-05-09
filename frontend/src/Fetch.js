@@ -28,6 +28,10 @@ class Fetcher extends Component {
     const init = { 
       method: 'GET',
       headers,
+      mode: 'cors', // no-cors, cors, *same-origin
+      redirect: 'follow', // manual, *follow, error
+      referrer: 'no-referrer', // *client, no-referrer
+      cache: 'no-cache',
     };
 
     let resp;
