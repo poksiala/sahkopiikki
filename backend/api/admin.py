@@ -2,7 +2,6 @@ from django.contrib import admin
 from api.models import *
 
 admin.site.disable_action('delete_selected')
-admin.site.register(Product)
 
 def set_done(modeladmin, request, queryset):
     queryset.update(done=True)
@@ -21,5 +20,9 @@ class TransactionAdmin(admin.ModelAdmin):
 class UserProfileAdmin(admin.ModelAdmin):
   list_display = ('user', 'balance')
 
+class ProductAdmin(admin.ModelAdmin):
+  list_display = ('name', 'price_in_euros')
+
+admin.site.register(Product, ProductAdmin)
 admin.site.register(Transaction, TransactionAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)

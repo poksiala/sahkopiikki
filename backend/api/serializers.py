@@ -6,7 +6,7 @@ from api.models import UserProfile, Product, Transaction
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ('url', 'username', 'email')
+        fields = ('id', 'url', 'username', 'email', 'first_name', 'last_name')
 
 
 class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
@@ -14,18 +14,21 @@ class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ('user', 'balance')
+        fields = ('id', 'user', 'balance')
         depth = 1
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Product
-        fields = ('name', 'price', 'image')
+        fields = ('id', 'name', 'price', 'image')
 
 class TransactionSerializer(serializers.HyperlinkedModelSerializer):
-    user = UserSerializer()
-
+    user = UserProfileSerializer(read_only=True)
+    product = ProductSerializer(read_only=True)
+    user_id = serializers.PrimaryKeyRelatedField(source='user', queryset=UserProfile.objects.all())
+    product_id = serializers.PrimaryKeyRelatedField(source='product', queryset=Product.objects.all())
+    
     class Meta:
         model = Transaction
-        fields = ('user', 'product', 'timestamp', 'price')
+        fields = ('id', 'user', 'user_id', 'product', 'product_id', 'timestamp', 'price')
         depth = 1

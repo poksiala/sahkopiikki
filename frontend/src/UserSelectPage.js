@@ -1,26 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import ListItem from './ListItem';
-
-const ukkelit = [
-  'Panu',
-  'Jan',
-  'A-J',
-  'Eero',
-  'Jan',
-  'A-J',
-  'Eero',
-  'Jan',
-  'A-J',
-  'Eero',
-  'Jan',
-  'A-J',
-  'Eero',
-  'Jan',
-  'A-J',
-  'Eero',
-
-];
+import Fetcher from './Fetch';
 
 class UserSelectPage extends Component {
   onUserSelect = (data) => {
@@ -29,14 +10,17 @@ class UserSelectPage extends Component {
   }
 
   render() {
+    const Users = users => users.data.map((user, index) => <ListItem 
+      name={user.user.first_name ? `${user.user.first_name} ${user.user.last_name}` : user.user.username}
+      key={index}
+      onClick={() => this.onUserSelect(user)}
+    />);
+
     return (
       <div className="List">
-        { ukkelit.map((ukkeli, index) => <ListItem 
-            name={ukkeli}
-            key={index}
-            onClick={() => this.onUserSelect(ukkeli)}
-          />)
-        }
+        <Fetcher url="http://localhost:8000/api/userprofiles">
+          <Users />
+        </Fetcher>
       </div>
     );
   }

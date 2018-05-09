@@ -1,10 +1,13 @@
 import React, { Component, Fragment } from 'react';
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import UserSelectPage from './UserSelectPage';
 import ProductSelectPage from './ProductSelectPage';
 import SummaryPage from './SummaryPage';
+import { popup } from './utils';
+
+const TIMEOUT = 60 * 1000; // 60s
 
 class App extends Component {
   constructor() {
@@ -13,13 +16,17 @@ class App extends Component {
       stage: 'user',
       user: null,
       product: null,
+      timer: null,
     };
   }
 
-  popup = (text, level) => {
-    toast[level](text, {
-      position: toast.POSITION.BOTTOM_CENTER,
-      autoClose: 6000,
+  timeout = () => {
+    popup('Piikitys aikakatkaistu.', 'warn');
+    this.setState({
+      stage: 'user',
+      user: null,
+      product: null,
+      timer: null,
     });
   }
 
@@ -28,24 +35,31 @@ class App extends Component {
       this.setState({
         stage: 'product',
         user: selection,
+        timer: window.setTimeout(this.timeout, TIMEOUT),
       });
     } else if (from === 'product') {
+      window.clearTimeout(this.state.timer);
       this.setState({
         stage: 'confirm',
         product: selection,
+        timer: window.setTimeout(this.timeout, TIMEOUT),
       });
     } else if (from === 'confirm') {
+      window.clearTimeout(this.state.timer);
       this.setState({
         stage: 'user',
+        timer: null,
+        user: null,
+        product: null,
       });
       const confirmed = selection;
       if (confirmed) {
-        this.popup('Tuotteet piikitetty!', 'success');
+        popup('Tuote piikitetty!', 'success');
       } else {
-        this.popup('Piikitys peruutettu!', 'warn');
+        popup('Piikitys peruutettu!', 'warn');
       }
     } else {
-      alert('Sivunvaihto kosahti!');
+      popup('Sivunvaihto kosahti!', 'error');
     }
   }
 
@@ -62,7 +76,7 @@ class App extends Component {
       Page = SummaryPage;
       title = 'Vahvista'
     } else {
-      alert('Renderi kosahti!');
+      popup('Renderi kosahti!', 'error');
     }
 
     return (
