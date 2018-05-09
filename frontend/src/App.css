@@ -10,7 +10,7 @@
 
 .App-header {
   background-color: #222;
-  padding: 20px;
+  padding: 20px 0;
   color: white;
   position: fixed;
   width: 100%;
@@ -29,6 +29,7 @@
 
 .App-intro {
   font-size: 2rem;
+  padding: 0 0.5rem;
 }
 
 .List {
@@ -60,6 +61,11 @@
 .Summary-row {
   padding: 1rem;
   font-size: 3rem;
+}
+@media screen and (max-width: 400px) {
+  .Summary-row {
+    font-size: 2rem;
+  }
 }
 
 label {
