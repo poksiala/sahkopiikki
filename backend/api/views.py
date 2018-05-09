@@ -8,15 +8,15 @@ from rest_framework import permissions, authentication
 from api.models import UserProfile, Transaction, Product
 from api.serializers import *
 
-class UserViewset(viewsets.ModelViewSet):
+class UserViewset(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-class UserProfileViewSet(viewsets.ModelViewSet):
+class UserProfileViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
 
-class ProductViewSet(viewsets.ModelViewSet):
+class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
