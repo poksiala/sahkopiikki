@@ -1,6 +1,6 @@
 import 'whatwg-fetch';
 import React, { Component } from 'react';
-import queryString from 'query-string';
+import qs from 'qs';
 
 class Fetcher extends Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class Fetcher extends Component {
   }
 
   async fetchData(url) {
-    const token = queryString.parse(window.location.search).token;
+    const token = qs.parse(window.location.search).token;
     const headers = {
       'Authorization': `Token ${token}`,
     };
@@ -74,7 +74,7 @@ class Fetcher extends Component {
 }
 
 const post = async (url, data) => {
-  const token = queryString.parse(window.location.search).token;
+  const token = qs.parse(window.location.search).token;
   const headers = {
     'Authorization': `Token ${token}`,
     'content-type': 'application/json'
