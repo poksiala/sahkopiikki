@@ -1,6 +1,13 @@
 import 'whatwg-fetch';
 import React, { Component } from 'react';
 import qs from 'qs';
+import './App.css';
+
+const ErrorContainer = ({error}) => (
+  <div className="App-error">
+    { String(error) }
+  </div>
+);
 
 class Fetcher extends Component {
   constructor(props) {
@@ -39,14 +46,23 @@ class Fetcher extends Component {
       resp = await fetch(url, init);
     } catch (err) {
       console.log(err);
-      throw new Error(`Cannot GET from url: ${url}. See log for details.`);
+      return this.setState({
+        ready: false,
+        error: new Error(`Cannot GET from url: ${url}. See log for details.`),
+      });
     }
 
     if (!resp.ok) {
       if (resp.status === 401) {
-        throw new Error(`Unauthorized. Did you remember the token?`);
+        return this.setState({
+          ready: false,
+          error: new Error(`Unauthorized. Did you remember the token?`),
+        });
       } else {
-        throw new Error(`GET returned status ${resp.status}`);
+        return this.setState({
+          ready: false,
+          error: new Error(`GET returned status ${resp.status}`),
+        });
       }
     }
   
@@ -55,7 +71,10 @@ class Fetcher extends Component {
       json = await resp.json();
     } catch (err) {
       console.log(err);
-      throw new Error(`Cannot parse JSON from GET. See log for details.`);
+      return this.setState({
+        ready: false,
+        error: new Error(`Cannot parse JSON from GET. See log for details.`),
+      });
     }
 
     this.setState({
@@ -70,7 +89,7 @@ class Fetcher extends Component {
     if (ready) {
       return React.cloneElement(this.props.children, { data, });
     } else if (error) {
-      return String(error);
+      return <ErrorContainer error={error} />
     } else {
       return null;
     }
@@ -98,14 +117,23 @@ const post = async (url, data) => {
     resp = await fetch(url, init);
   } catch (err) {
     console.log(err);
-    throw new Error(`Cannot POST to url: ${url}. See log for details.`);
+    return this.setState({
+      ready: false,
+      error: new Error(`Cannot POST to url: ${url}. See log for details.`),
+    });
   }
 
   if (!resp.ok) {
     if (resp.status === 401) {
-      throw new Error(`Unauthorized. Did you remember the token?`);
+      return this.setState({
+        ready: false,
+        error: new Error(`Unauthorized. Did you remember the token?`),
+      });
     } else {
-      throw new Error(`GET returned status ${resp.status}`);
+      return this.setState({
+        ready: false,
+        error: new Error(`POST returned status ${resp.status}`),
+      });
     }
   }
 
@@ -114,7 +142,10 @@ const post = async (url, data) => {
     json = await resp.json();
   } catch (err) {
     console.log(err);
-    throw new Error(`Cannot parse JSON from POST response. See log for details.`);
+    return this.setState({
+      ready: false,
+      error: new Error(`Cannot parse JSON from POST response. See log for details.`),
+    });
   }
 
   return json;

@@ -44,7 +44,12 @@ html, body, #root, .App {
 
 .App-intro {
   font-size: 2rem;
-  padding: 0 0.5rem;
+  padding: 0 1rem;
+}
+
+.App-error {
+  padding: 1rem;
+  background-color: $color-red;
 }
 
 .List {
