@@ -1,0 +1,101 @@
+$color-blue: #121F40;
+$color-white: #fff;
+$color-darkblue: #182657;
+$color-pink: #c75294;
+$color-yellow: #D59B2D;
+$color-green: rgb(115, 165, 115);
+$color-red: rgb(185, 127, 127);
+
+html, body, #root, .App {
+  height: 100%;
+}
+
+.App {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: $color-white;
+  background-color: $color-blue;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: $color-darkblue;
+  padding: 20px 0;
+  color: $color-white;
+  position: fixed;
+  width: 100%;
+
+  height: 7rem;
+  margin-bottom: 2rem;
+  border-bottom: 4px solid $color-pink;
+}
+
+.App-header-padder {
+  height: 11rem;
+}
+
+.App-title {
+  font-size: 3rem;
+}
+
+.App-intro {
+  font-size: 2rem;
+  padding: 0 0.5rem;
+}
+
+.List {
+  text-align: center;
+  overflow: scroll;
+}
+
+.ListItem {
+  margin: 0.5rem auto;
+  padding: 1.5rem 0.5rem;
+  background-color: $color-darkblue;
+  color: $color-white;
+  max-width: 60%;
+  border-left: 4px solid $color-white;
+
+  &.Success {
+    background-color: $color-green;
+    border-left: none;
+  }
+  
+  &.Danger {
+    background-color: $color-red;
+    border-left: none;
+  }
+}
+
+.Toastify__toast-body {
+  padding: 1rem;
+  font-size: 2.5rem;
+  width: 80%;
+}
+
+.Toastify__toast--warning {
+  background: $color-yellow !important;
+}
+
+.Toastify__toast--success {
+  background: $color-green !important;
+}
+
+.Summary-row {
+  padding: 1rem;
+  font-size: 3rem;
+}
+
+@media screen and (max-width: 400px) {
+  .Summary-row {
+    font-size: 2rem;
+  }
+}
+
+label {
+  font-weight: 700;
+}
