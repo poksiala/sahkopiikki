@@ -7,7 +7,7 @@ const backendAPI = process.env.REACT_APP_BACKEND_URL;
 
 class UserSelectPage extends Component {
   onUserSelect = (data) => {
-    console.log(`User ${data} clicked.`);
+    console.log(`User ${data.user.username} clicked.`);
     this.props.advance(data);
   }
 
