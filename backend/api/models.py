@@ -1,3 +1,6 @@
+"""
+Sähköpiikki database models.
+"""
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -6,31 +9,40 @@ from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
 class UserProfile(models.Model):
+  """User Profile model."""
   user = models.ForeignKey(User, on_delete=models.CASCADE)
+  visible = models.BooleanField(default=True)
 
   def balance(self):
-    return "{:.2f}€".format(-sum(map(lambda t: t.price, self.transactions.filter(done=False))) / 100)
+    """Calculate user balance."""
+    return "{:.2f}€".format(-sum(map(
+        lambda t: t.price, self.transactions.filter(done=False))) / 100)
 
   def __str__(self):
-    if len(self.user.first_name) > 0:
+    if not self.user.first_name:
       return "{} {}".format(self.user.first_name, self.user.last_name)
-    else:
-      return self.user.username
+
+    return self.user.username
 
 class Product(models.Model):
+  """Product model."""
   name = models.CharField(max_length=200)
   price = models.IntegerField()
   price.help_text = 'In cents'
   image = models.ImageField(upload_to='uploaded_images/')
+  visible = models.BooleanField(default=True)
 
   def price_in_euros(self):
+    """Calculate price in euros."""
     return "{:.2f}€".format(self.price / 100)
 
   def __str__(self):
     return self.name
 
 class Transaction(models.Model):
-  user = models.ForeignKey('UserProfile', related_name='transactions', on_delete=models.SET_NULL, null=True)
+  """Transaction model."""
+  user = models.ForeignKey('UserProfile', related_name='transactions',
+                           on_delete=models.SET_NULL, null=True)
   product = models.ForeignKey('Product', on_delete=models.SET_NULL, null=True)
   timestamp = models.DateTimeField(auto_now=True)
   price = models.IntegerField()
@@ -38,9 +50,11 @@ class Transaction(models.Model):
   done = models.BooleanField(default=False)
 
   def name(self):
-    return self.__str__()
+    """Get human readable name for transaction."""
+    return str(self)
 
   def price_in_euros(self):
+    """Calculate price in euros."""
     return "{:.2f}€".format(self.price / 100)
 
   def __str__(self):
@@ -48,5 +62,7 @@ class Transaction(models.Model):
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
-    if created:
-        Token.objects.create(user=instance)
+  #pylint: disable=unused-argument
+  """Create a token when a new user is created."""
+  if created:
+    Token.objects.create(user=instance)

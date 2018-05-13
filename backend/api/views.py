@@ -1,25 +1,31 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-
-from django.contrib.auth.models import User, Group
+"""
+Sähköpiikki views.
+"""
+from django.contrib.auth.models import User
 from rest_framework import viewsets
-from rest_framework import permissions, authentication
 
 from api.models import UserProfile, Transaction, Product
-from api.serializers import *
+from api.serializers import (
+    UserSerializer, UserProfileSerializer,
+    ProductSerializer, TransactionSerializer
+)
 
 class UserViewset(viewsets.ReadOnlyModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+  """User viewset."""
+  queryset = User.objects.all()
+  serializer_class = UserSerializer
 
 class UserProfileViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = UserProfile.objects.all()
-    serializer_class = UserProfileSerializer
+  """User Profile viewset."""
+  queryset = UserProfile.objects.filter(visible=True)
+  serializer_class = UserProfileSerializer
 
 class ProductViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
+  """Product viewset."""
+  queryset = Product.objects.filter(visible=True)
+  serializer_class = ProductSerializer
 
 class TransactionViewSet(viewsets.ModelViewSet):
-    queryset = Transaction.objects.all()
-    serializer_class = TransactionSerializer
+  """Transaction viewset."""
+  queryset = Transaction.objects.all()
+  serializer_class = TransactionSerializer
