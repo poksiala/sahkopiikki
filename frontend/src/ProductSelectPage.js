@@ -20,7 +20,7 @@ class UserSelectPage extends Component {
 
     return (
       <div className="List">
-        <Fetcher url={`${backendAPI}/products`}>
+        <Fetcher url={`${backendAPI}/products/`}>
           <Products />
         </Fetcher>
       </div>
