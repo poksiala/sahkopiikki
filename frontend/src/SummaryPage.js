@@ -46,6 +46,9 @@ class UserSelectPage extends Component {
         <div className="Summary-row">
           <label>Hinta: </label>{ (product.price / 100.0).toFixed(2) }€
         </div>
+        <div className="Summary-row">
+          <label>Saldo ennen tapahtumaa: </label>{ user.balance }
+        </div>
         <ListItem className="Success" name="Hyväksy" onClick={() => this.onConfirm()} />
         <ListItem className="Danger" name="Peruuta ja palaa alkuun" onClick={() => this.onReject()} />
       </div>
