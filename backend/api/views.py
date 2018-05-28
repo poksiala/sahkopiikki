@@ -17,7 +17,7 @@ class UserViewset(viewsets.ReadOnlyModelViewSet):
 
 class UserProfileViewSet(viewsets.ReadOnlyModelViewSet):
   """User Profile viewset."""
-  queryset = UserProfile.objects.filter(visible=True)
+  queryset = UserProfile.objects.filter(visible=True).order_by('first_name')
   serializer_class = UserProfileSerializer
 
 class ProductViewSet(viewsets.ReadOnlyModelViewSet):
