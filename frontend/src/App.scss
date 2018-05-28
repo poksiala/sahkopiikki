@@ -8,6 +8,7 @@ $color-red: rgb(185, 127, 127);
 
 html, body, #root, .App {
   height: 100%;
+  background-color: $color-blue;
 }
 
 .App {
@@ -45,6 +46,7 @@ html, body, #root, .App {
 .App-intro {
   font-size: 2rem;
   padding: 0 1rem;
+  height: 100%;
 }
 
 .App-error {
@@ -54,7 +56,8 @@ html, body, #root, .App {
 
 .List {
   text-align: center;
-  overflow: scroll;
+  overflow-y: scroll;
+  height: 100%;
 }
 
 .ListItem {
@@ -96,8 +99,23 @@ html, body, #root, .App {
 }
 
 @media screen and (max-width: 400px) {
-  .Summary-row {
+  .App-intro {
+    font-size: 1.5rem;
+  }
+
+  .App-title {
     font-size: 2rem;
+  }
+
+  .App-header {
+    height: 5rem;
+  }
+
+  .App-header-padder {
+    height: 9rem;
+  }
+
+  .Summary-row {
     padding: 0.5rem;
   }
 }
