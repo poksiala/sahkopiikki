@@ -67,6 +67,7 @@ html, body, #root, .App {
   color: $color-white;
   max-width: 60%;
   border-left: 4px solid $color-white;
+  user-select: none;
 
   &.Success {
     background-color: $color-green;
