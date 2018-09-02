@@ -22,7 +22,7 @@ def set_profile_all_done(modeladmin, request, queryset):
   """Action to set all transactions as True."""
   #pylint: disable=W0613
   for user in queryset:
-    transactions = Transaction.objects.filter(user=user).update(done=True)
+    Transaction.objects.filter(user=user).update(done=True)
 
 set_profile_all_done.short_description = "Mark all transactions as done for profile"
 
