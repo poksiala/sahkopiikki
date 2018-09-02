@@ -62,7 +62,7 @@ html, body, #root, .App {
 
 .ListItem {
   margin: 0.5rem auto;
-  padding: 1.5rem 0.5rem;
+  padding: 1rem 0.5rem;
   background-color: $color-darkblue;
   color: $color-white;
   max-width: 60%;
@@ -73,7 +73,7 @@ html, body, #root, .App {
     background-color: $color-green;
     border-left: none;
   }
-  
+
   &.Danger {
     background-color: $color-red;
     border-left: none;
@@ -82,7 +82,7 @@ html, body, #root, .App {
 
 .Toastify__toast-body {
   padding: 1rem;
-  font-size: 2.5rem;
+  font-size: 2rem;
   width: 80%;
 }
 
@@ -96,12 +96,12 @@ html, body, #root, .App {
 
 .Summary-row {
   padding: 1rem;
-  font-size: 3rem;
+  font-size: 1.5rem;
 }
 
 @media screen and (max-width: 400px) {
   .App-intro {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
 
   .App-title {
@@ -109,11 +109,11 @@ html, body, #root, .App {
   }
 
   .App-header {
-    height: 5rem;
+    height: 4rem;
   }
 
   .App-header-padder {
-    height: 9rem;
+    height: 8rem;
   }
 
   .Summary-row {
