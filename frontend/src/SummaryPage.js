@@ -23,6 +23,8 @@ class UserSelectPage extends Component {
       });
       this.props.advance(true);
     } catch (err) {
+      if (err.throttled) return;
+
       console.log(err);
       popup(`Failed to send POST to backend. Check log for details.`, 'error');
     }

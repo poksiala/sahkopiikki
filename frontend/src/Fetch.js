@@ -32,7 +32,7 @@ class Fetcher extends Component {
     const headers = {
       'Authorization': `Token ${token}`,
     };
-    const init = { 
+    const init = {
       method: 'GET',
       headers,
       mode: 'cors', // no-cors, cors, *same-origin
@@ -65,7 +65,7 @@ class Fetcher extends Component {
         });
       }
     }
-  
+
     let json;
     try {
       json = await resp.json();
@@ -96,13 +96,16 @@ class Fetcher extends Component {
   }
 }
 
+const POST_THROTTLE_MS = 1000;
+let lastPostTimestamp = Date.now();
+
 const post = async (url, data) => {
   const token = qs.parse(window.location.search.split('?')[1]).token;
   const headers = {
     'Authorization': `Token ${token}`,
     'content-type': 'application/json'
   };
-  const init = { 
+  const init = {
     method: 'POST',
     headers,
     body: JSON.stringify(data),
@@ -111,6 +114,16 @@ const post = async (url, data) => {
     referrer: 'no-referrer', // *client, no-referrer
     cache: 'no-cache',
   };
+
+  const now = Date.now();
+  if (now - lastPostTimestamp < POST_THROTTLE_MS) {
+    console.warn('Throttled POST request in frontend.');
+    const err = new Error('Throttled POST request in frontend.');
+    err.throttled = true;
+    throw err;
+  }
+
+  lastPostTimestamp = now;
 
   let resp;
   try {
