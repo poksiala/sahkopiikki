@@ -38,7 +38,7 @@ class UserProfileViewSet(viewsets.ReadOnlyModelViewSet):
 
 class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     """Product viewset."""
-    queryset = Product.objects.filter(visible=True)
+    queryset = Product.objects.filter(visible=True).order_by('-last_bought')
     serializer_class = ProductSerializer
 
 class TransactionViewSet(viewsets.ModelViewSet):
