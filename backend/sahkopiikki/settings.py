@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+from secrets import SLACK_WEBHOOK_URL
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'vqj39+4-mu!wog^vim84gkqj^8whj6(58ii@o)u1wa8=byo$61'
+SECRET_KEY = 'vqj39+4-mu!wog^vim84gkqj^8whj6(58ii@o)u1wa8=byo$61' #TODO: move this to secrets.py
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -33,6 +34,7 @@ REST_FRAMEWORK = {
   ),
   'DEFAULT_AUTHENTICATION_CLASSES': (
       'rest_framework.authentication.TokenAuthentication',
+      'rest_framework.authentication.SessionAuthentication'
   )
 }
 
@@ -133,3 +135,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Slack webhook configuration
+# Set `username` and `icon_emoji` or `icon_url` here
+SLACK_DICT = {
+    "icon_emoji": ":beers:",
+    "username": "Piikkibotti"
+}
+
