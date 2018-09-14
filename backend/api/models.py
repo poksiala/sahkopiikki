@@ -12,6 +12,8 @@ class UserProfile(models.Model):
   """User Profile model."""
   user = models.ForeignKey(User, on_delete=models.CASCADE)
   visible = models.BooleanField(default=True)
+  slack_handle = models.CharField(max_length=50, null=True, default=None)
+  slack_handle.help_text = 'Without @-char. Leave empty to disable notifications'
 
   def balance(self):
     """Calculate user balance."""
