@@ -135,7 +135,9 @@ STATIC_URL = '/static/'
 
 # Slack webhook configuration
 # Set `username` and `icon_emoji` or `icon_url` here
+# Variables available for `text` are `name` and `balance`
 SLACK_DICT = {
     "icon_emoji": ":beers:",
-    "username": "Piikkibotti"
+    "username": "Piikkibotti",
+    "text": "Hi, {name}! According to our records your sahkopiikki balance is {balance}"
 }
