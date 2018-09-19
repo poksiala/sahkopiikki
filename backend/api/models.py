@@ -4,6 +4,7 @@ Sähköpiikki database models.
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.db.models import Sum
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
@@ -15,10 +16,16 @@ class UserProfile(models.Model):
   slack_handle = models.CharField(max_length=50, null=True, default=None)
   slack_handle.help_text = 'Without @-char. Leave empty to disable notifications'
 
-  def balance(self):
-    """Calculate user balance."""
-    return "{:.2f}€".format(-sum(map(
-        lambda t: t.price, self.transactions.filter(done=False))) / 100)
+  def balance(self) -> str:
+    """Format user balance string."""
+    return "{:.2f}€".format(self.balance_cents() / 100)
+
+  def balance_cents(self) -> int:
+    """Calculate user balance in cents."""
+    result = self.transactions.filter(done=False).aggregate(total=Sum('price'))
+    if result['total']:
+      return -result['total']
+    return 0 # Sum returns none on empty queryset. Hence this.
 
   def __str__(self):
     if not self.user.first_name:
