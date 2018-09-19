@@ -13,7 +13,7 @@ class UserProfile(models.Model):
   """User Profile model."""
   user = models.OneToOneField(User, on_delete=models.CASCADE)
   visible = models.BooleanField(default=True)
-  slack_handle = models.CharField(max_length=50, null=True, default=None)
+  slack_handle = models.CharField(max_length=50, null=True, blank=True, default=None)
   slack_handle.help_text = 'Without @-char. Leave empty to disable notifications'
 
   def balance(self) -> str:
@@ -40,7 +40,7 @@ class Product(models.Model):
   price.help_text = 'In cents'
   image = models.ImageField(upload_to='uploaded_images/')
   visible = models.BooleanField(default=True)
-  last_bought = models.DateTimeField(null=True, default=None)
+  last_bought = models.DateTimeField(null=True, blank=True, default=None)
 
   def price_in_euros(self):
     """Calculate price in euros."""
