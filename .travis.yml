@@ -8,6 +8,7 @@ install:
 script:
   - pushd frontend
   - cp .env.template .env
+  - npm run build
   - npm run test
   - popd
 before_deploy:
