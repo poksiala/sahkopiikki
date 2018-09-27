@@ -7,7 +7,7 @@ install:
   - popd
 script:
   - pushd frontend
-  - cp .env.sample .env
+  - cp .env.template .env
   - npm run test
   - popd
 before_deploy:
