@@ -8,6 +8,7 @@ jobs:
         - cd backend
       install:
         - pip install -r requirements.txt
+        - cp sahkopiikki/settings.template.py sahkopiikki/settings.py
       script:
         - python manage.py test
     - stage: test
