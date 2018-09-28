@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import ListItem from './ListItem';
-import { post } from './Fetch';
+import { get, post } from './Fetch';
 import { popup } from './utils';
 
 const backendAPI = process.env.REACT_APP_BACKEND_URL;
@@ -15,8 +15,10 @@ class SummaryPage extends Component {
     const { user, product } = this.props.info;
     console.log(`Confirmed.`);
     try {
+      const resp = await get(`${backendAPI}/me/`);
       await post(`${backendAPI}/transactions/`, {
         user_id: user.id,
+        actor_id: resp.id,
         timestamp: new Date(),
         price: product.price,
         product_id: product.id,
