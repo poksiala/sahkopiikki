@@ -44,6 +44,7 @@ class Transaction(models.Model):
   """Transaction model."""
   user = models.ForeignKey('UserProfile', related_name='transactions',
                            on_delete=models.SET_NULL, null=True)
+  actor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
   product = models.ForeignKey('Product', on_delete=models.SET_NULL, null=True)
   timestamp = models.DateTimeField(auto_now=True)
   price = models.IntegerField()
