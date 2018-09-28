@@ -2,8 +2,10 @@
 Sähköpiikki views.
 """
 from django.contrib.auth.models import User
+from django.http import JsonResponse
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework.authtoken.models import Token
 
 from api.models import UserProfile, Transaction, Product
 from api.serializers import (
@@ -46,3 +48,14 @@ class TransactionViewSet(viewsets.ModelViewSet):
     queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
 
+
+def me_view(request):
+    auth = request.META.get('HTTP_AUTHORIZATION')
+    if auth is None:
+        return HttpResponse(status=403)
+
+    key = auth.split(' ')[1]
+    token = Token.objects.get(key=key)
+    return JsonResponse({
+        'id': token.user.id
+    })

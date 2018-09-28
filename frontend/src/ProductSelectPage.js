@@ -5,7 +5,7 @@ import Fetcher from './Fetch';
 
 const backendAPI = process.env.REACT_APP_BACKEND_URL;
 
-class UserSelectPage extends Component {
+class ProductSelectPage extends Component {
   onProductSelect = (data) => {
     console.log(`Product ${data.name} clicked.`);
     this.props.advance(data);
@@ -28,4 +28,4 @@ class UserSelectPage extends Component {
   }
 }
 
-export default UserSelectPage;
+export default ProductSelectPage;

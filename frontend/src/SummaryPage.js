@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
 import ListItem from './ListItem';
-import { post } from './Fetch';
+import { get, post } from './Fetch';
 import { popup } from './utils';
 
 const backendAPI = process.env.REACT_APP_BACKEND_URL;
 
-class UserSelectPage extends Component {
+class SummaryPage extends Component {
   constructor() {
     super();
     this.onConfirm = this.onConfirm.bind(this);
@@ -15,8 +15,10 @@ class UserSelectPage extends Component {
     const { user, product } = this.props.info;
     console.log(`Confirmed.`);
     try {
+      const resp = await get(`${backendAPI}/me/`);
       await post(`${backendAPI}/transactions/`, {
         user_id: user.id,
+        actor_id: resp.id,
         timestamp: new Date(),
         price: product.price,
         product_id: product.id,
@@ -58,4 +60,4 @@ class UserSelectPage extends Component {
   }
 }
 
-export default UserSelectPage;
+export default SummaryPage;
