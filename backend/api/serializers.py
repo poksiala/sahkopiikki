@@ -31,11 +31,13 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
 class TransactionSerializer(serializers.HyperlinkedModelSerializer):
   """Transaction model serializer."""
   user = UserProfileSerializer(read_only=True)
+  actor = UserSerializer(read_only=True)
   product = ProductSerializer(read_only=True)
   user_id = serializers.PrimaryKeyRelatedField(source='user', queryset=UserProfile.objects.all())
+  actor_id = serializers.PrimaryKeyRelatedField(source='actor', queryset=User.objects.all())
   product_id = serializers.PrimaryKeyRelatedField(source='product', queryset=Product.objects.all())
 
   class Meta:
     model = Transaction
-    fields = ('id', 'user', 'user_id', 'product', 'product_id', 'timestamp', 'price')
+    fields = ('id', 'user', 'user_id', 'actor', 'actor_id', 'product', 'product_id', 'timestamp', 'price')
     depth = 1
