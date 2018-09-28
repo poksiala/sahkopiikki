@@ -6,7 +6,7 @@ import { popup } from './utils';
 
 const backendAPI = process.env.REACT_APP_BACKEND_URL;
 
-class UserSelectPage extends Component {
+class SummaryPage extends Component {
   constructor() {
     super();
     this.onConfirm = this.onConfirm.bind(this);
@@ -58,4 +58,4 @@ class UserSelectPage extends Component {
   }
 }
 
-export default UserSelectPage;
+export default SummaryPage;
