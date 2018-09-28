@@ -1,22 +1,37 @@
-language: node_js
-node_js:
-  - '10'
-install:
-  - pushd frontend
-  - npm ci
-  - popd
-script:
-  - pushd frontend
-  - cp .env.template .env
-  - npm run build
-  - npm run test
-  - popd
-before_deploy:
-  - openssl aes-256-cbc -K $encrypted_19f1f1d7001a_key -iv $encrypted_19f1f1d7001a_iv -in deploy_key.enc -out /tmp/deploy_key -d
-deploy:
-  provider: script
-  script: bash .travis_deploy.sh
-  on:
-    branch: production
+jobs:
+  include:
+    - stage: test
+      language: python
+      python:
+        - 3.6
+      before_install:
+        - cd backend
+      install:
+        - pip install -r requirements.txt
+      script:
+        - python manage.py test
+    - stage: test
+      language: node_js
+      node_js:
+        - '10'
+      before_install:
+        - cd frontend
+      install:
+        - npm ci
+        - npm run build
+      script:
+        - npm run test
+    - stage: deploy
+      if: branch = production
+      language: node_js
+      node_js:
+        - '10'
+      before_script:
+        - openssl aes-256-cbc -K $encrypted_19f1f1d7001a_key -iv $encrypted_19f1f1d7001a_iv -in deploy_key.enc -out /tmp/deploy_key -d
+      script:
+        provider: script
+        script: bash .travis_deploy.sh
+
 notifications:
+  email: false
   slack: radiodiodi:bKmg9JXX91Ijut1X6dy5zcK1
