@@ -9,6 +9,47 @@ const ErrorContainer = ({error}) => (
   </div>
 );
 
+const get = async (url, data) => {
+  const token = qs.parse(window.location.search.split('?')[1]).token;
+  const headers = {
+    'Authorization': `Token ${token}`,
+  };
+  const init = {
+    method: 'GET',
+    headers,
+    mode: 'cors', // no-cors, cors, *same-origin
+    redirect: 'follow', // manual, *follow, error
+    referrer: 'no-referrer', // *client, no-referrer
+    cache: 'no-cache',
+  };
+
+  let resp;
+  try {
+    resp = await fetch(url, init);
+  } catch (err) {
+    console.log(err);
+    throw new Error(`Cannot GET from url: ${url}. See log for details.`);
+  }
+
+  if (!resp.ok) {
+    if (resp.status === 401) {
+      throw new Error(`Unauthorized. Did you remember the token?`);
+    } else {
+      throw new Error(`GET returned status ${resp.status}`);
+    }
+  }
+
+  let json;
+  try {
+    json = await resp.json();
+  } catch (err) {
+    console.log(err);
+    throw new Error(`Cannot parse JSON from GET. See log for details.`);
+  }
+
+  return json;
+}
+
 class Fetcher extends Component {
   constructor(props) {
     super(props);
@@ -28,54 +69,7 @@ class Fetcher extends Component {
   }
 
   async fetchData(url) {
-    const token = qs.parse(window.location.search.split('?')[1]).token;
-    const headers = {
-      'Authorization': `Token ${token}`,
-    };
-    const init = {
-      method: 'GET',
-      headers,
-      mode: 'cors', // no-cors, cors, *same-origin
-      redirect: 'follow', // manual, *follow, error
-      referrer: 'no-referrer', // *client, no-referrer
-      cache: 'no-cache',
-    };
-
-    let resp;
-    try {
-      resp = await fetch(url, init);
-    } catch (err) {
-      console.log(err);
-      return this.setState({
-        ready: false,
-        error: new Error(`Cannot GET from url: ${url}. See log for details.`),
-      });
-    }
-
-    if (!resp.ok) {
-      if (resp.status === 401) {
-        return this.setState({
-          ready: false,
-          error: new Error(`Unauthorized. Did you remember the token?`),
-        });
-      } else {
-        return this.setState({
-          ready: false,
-          error: new Error(`GET returned status ${resp.status}`),
-        });
-      }
-    }
-
-    let json;
-    try {
-      json = await resp.json();
-    } catch (err) {
-      console.log(err);
-      return this.setState({
-        ready: false,
-        error: new Error(`Cannot parse JSON from GET. See log for details.`),
-      });
-    }
+    const json = await get(url);
 
     this.setState({
       data: json,
@@ -130,23 +124,14 @@ const post = async (url, data) => {
     resp = await fetch(url, init);
   } catch (err) {
     console.log(err);
-    return this.setState({
-      ready: false,
-      error: new Error(`Cannot POST to url: ${url}. See log for details.`),
-    });
+    throw new Error(`Cannot POST to url: ${url}. See log for details.`);
   }
 
   if (!resp.ok) {
     if (resp.status === 401) {
-      return this.setState({
-        ready: false,
-        error: new Error(`Unauthorized. Did you remember the token?`),
-      });
+      throw new Error(`Unauthorized. Did you remember the token?`);
     } else {
-      return this.setState({
-        ready: false,
-        error: new Error(`POST returned status ${resp.status}`),
-      });
+      throw new Error(`POST returned status ${resp.status}`);
     }
   }
 
@@ -155,14 +140,11 @@ const post = async (url, data) => {
     json = await resp.json();
   } catch (err) {
     console.log(err);
-    return this.setState({
-      ready: false,
-      error: new Error(`Cannot parse JSON from POST response. See log for details.`),
-    });
+    throw new Error(`Cannot parse JSON from POST response. See log for details.`);
   }
 
   return json;
 };
 
-export { post, };
+export { get, post };
 export default Fetcher;
