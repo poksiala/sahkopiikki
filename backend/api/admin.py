@@ -28,7 +28,7 @@ set_profile_all_done.short_description = "Mark all transactions as done for prof
 
 class TransactionAdmin(admin.ModelAdmin):
   """Transaction admin."""
-  list_display = ('name', 'user', 'price_in_euros', 'timestamp', 'done')
+  list_display = ('name', 'user', 'actor', 'price_in_euros', 'timestamp', 'done')
   actions = [set_done, set_not_done]
 
 class UserProfileAdmin(admin.ModelAdmin):
