@@ -25,7 +25,9 @@ echo "# Installing Node.js dependencies."
 npm ci
 
 echo "# Building the frontend project."
+set +e # The build script might return non-zero even on success
 npm run build
+set -e
 
 echo "# Setting new build as the active build."
 rm -rf "$APP_DIR/frontend/dist"
