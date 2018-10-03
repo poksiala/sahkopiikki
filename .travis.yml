@@ -28,8 +28,8 @@ jobs:
       node_js:
         - '10'
       before_script:
-        - openssl aes-256-cbc -K $encrypted_19f1f1d7001a_key -iv $encrypted_19f1f1d7001a_iv -in deploy_key.enc -out /tmp/deploy_key -d
-      script: bash .travis_deploy.sh
+        - openssl aes-256-cbc -K $encrypted_19f1f1d7001a_key -iv $encrypted_19f1f1d7001a_iv -in deploy/deploy_key.enc -out deploy/deploy_key -d
+      script: bash deploy/deploy.sh
 
 notifications:
   email: false
