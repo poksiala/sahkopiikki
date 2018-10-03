@@ -1,6 +1,5 @@
 #!/bin/bash
 . .bashrc
-nvm use 10
 APP_DIR=~/sahkopiikki
 cd "$APP_DIR"
 
@@ -37,11 +36,21 @@ cd ../backend
 
 echo "# Activating virtualenv."
 set +e # The activate script might return non-zero even on success
-source venv/bin/activate
+source ~/venv/bin/activate
 set -e
 
 echo "# Installing pip requirements."
 pip install -r requirements.txt
+
+echo "# Collecting static files."
+python manage.py collectstatic
+
+echo "# Taking a database backup."
+mkdir -p backups
+cp db.sqlite3 backups/db.sqlite3.bak_`date "+%Y-%m-%d"`
+
+echo "# Running database migrations."
+python manage.py migrate
 
 echo "# Restarting the backend service."
 sudo systemctl restart sahkopiikki
