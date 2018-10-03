@@ -1,9 +1,12 @@
 #!/bin/bash
+
+TARGET="${LC_COMMIT_HASH:-origin/production}"
 . .bashrc
 APP_DIR=~/sahkopiikki
 cd "$APP_DIR"
 
 echo "# Starting deployment."
+echo "# Target commit: ${TARGET}"
 set -e # Fail the script on any errors.
 
 nvm use 10
@@ -16,11 +19,8 @@ git stash
 echo "# Fetching remote."
 git fetch --all
 
-echo "# Checking out production."
-git checkout production
-
-echo "# Pulling latest changes."
-git pull
+echo "# Checking out the specified commit."
+git checkout "${TARGET}"
 
 echo "# Navigating to the backend directory."
 cd backend
