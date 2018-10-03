@@ -6,6 +6,10 @@ cd "$APP_DIR"
 echo "# Starting deployment."
 set -e # Fail the script on any errors.
 
+nvm use 10
+printf "# Node version: $(node --version)\n"
+printf "# NPM version: $(npm --version)\n"
+
 echo "# Stashing local changes to tracked files."
 git stash
 
@@ -18,23 +22,8 @@ git checkout production
 echo "# Pulling latest changes."
 git pull
 
-echo "# Navigating to the frontend directory."
-cd frontend
-
-echo "# Installing Node.js dependencies."
-npm ci
-
-echo "# Building the frontend project."
-set +e # The build script might return non-zero even on success
-npm run build
-set -e
-
-echo "# Setting new build as the active build."
-rm -rf "$APP_DIR/frontend/dist"
-mv "$APP_DIR/frontend/build" "$APP_DIR/frontend/dist"
-
 echo "# Navigating to the backend directory."
-cd ../backend
+cd backend
 
 echo "# Activating virtualenv."
 set +e # The activate script might return non-zero even on success
@@ -45,17 +34,30 @@ echo "# Installing pip requirements."
 pip install -r requirements.txt
 
 echo "# Collecting static files."
-python manage.py collectstatic
+python manage.py collectstatic --noinput
 
 echo "# Taking a database backup."
 mkdir -p backups
 cp db.sqlite3 backups/db.sqlite3.bak_`date "+%Y-%m-%d"`
 
 echo "# Running database migrations."
-python manage.py migrate
+python manage.py migrate --noinput
 
 echo "# Restarting the backend service."
 sudo systemctl restart sahkopiikki
+
+echo "# Navigating to the frontend directory."
+cd ../frontend
+
+echo "# Installing Node.js dependencies."
+npm ci
+
+echo "# Building the frontend project."
+npx react-scripts build
+
+echo "# Setting new build as the active build."
+rm -rf "$APP_DIR/frontend/dist"
+mv "$APP_DIR/frontend/build" "$APP_DIR/frontend/dist"
 
 set +e
 echo "# Deployment done!"
